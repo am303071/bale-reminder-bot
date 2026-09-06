@@ -1,22 +1,21 @@
-
 import os
 import requests
+import time
 
 TOKEN = os.getenv("BALE_TOKEN")
-CHAT_ID = os.getenv("BALE_CHAT_ID")
 
-def send_message(text):
-    url = f"https://tapi.bale.ai/bot{TOKEN}/sendMessage"
+URL = f"https://tapi.bale.ai/bot{TOKEN}/getUpdates"
 
-    data = {
-        "chat_id": CHAT_ID,
-        "text": text
-    }
+print("Bot started...")
 
-    response = requests.post(url, json=data)
+while True:
+    try:
+        response = requests.get(URL)
 
-    print(response.status_code)
-    print(response.text)
+        print("Status:", response.status_code)
+        print("Response:", response.text)
 
+    except Exception as e:
+        print("Error:", e)
 
-send_message("🔔 باید سه‌شنبه نامه ریکال رو بزنی")
+    time.sleep(10)

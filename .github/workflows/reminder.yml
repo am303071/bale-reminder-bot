@@ -2,7 +2,7 @@ name: Bale Reminder
 
 on:
   schedule:
-  - cron: "45 3 * * 2"
+    - cron: "30 2 * * 2"
   workflow_dispatch:
 
 jobs:

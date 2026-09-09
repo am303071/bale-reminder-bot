@@ -50,6 +50,9 @@ tomorrow_str = tomorrow.strftime("%Y-%m-%d")
 
 rows = sheet.get_all_values()
 
+print("ROWS FROM SHEET:")
+print(rows)
+
 today_data = None
 tomorrow_data = None
 
@@ -70,7 +73,7 @@ if rows:
 
 
 # =========================
-# اطلاعات امروز
+# اطلاعات تاریخ امروز
 # =========================
 
 if today_data:
@@ -91,16 +94,13 @@ else:
 # ساخت پیام
 # =========================
 
-message = "📋 ━━━ برنامه روزانه ━━━\n\n"
-
-message += f"📅 {day_today}  |  {jalali_today or today_str}\n\n"
+message = f"📅 برنامه امروز\n"
+message += f"{day_today} {jalali_today or today_str}\n\n"
 
 
 # =========================
 # کارهای امروز
 # =========================
-
-message += "📝 کارهای امروز\n"
 
 if today_data:
 
@@ -109,21 +109,23 @@ if today_data:
     ).strip()
 
     if tasks:
-        message += f"└ {tasks}\n\n"
+        message += "📝 کارهای امروز:\n"
+        message += tasks + "\n\n"
     else:
-        message += "└ موردی ثبت نشده\n\n"
+        message += "📝 کارهای امروز:\n"
+        message += "موردی ثبت نشده.\n\n"
 
 else:
 
-    message += "└ اطلاعاتی ثبت نشده\n\n"
+    message += "📝 کارهای امروز:\n"
+    message += "اطلاعاتی برای امروز ثبت نشده.\n\n"
 
 
 # =========================
-# اطلاعات فردا
+# اطلاعات تاریخ فردا
 # =========================
 
 if tomorrow_data:
-
     jalali_tomorrow = str(
         tomorrow_data.get("تاریخ شمسی", "")
     ).strip()
@@ -133,7 +135,6 @@ if tomorrow_data:
     ).strip()
 
 else:
-
     jalali_tomorrow = ""
     day_tomorrow = ""
 
@@ -142,12 +143,8 @@ else:
 # شیفت فردا
 # =========================
 
-message += "👥 ━━━ شیفت فردا ━━━\n"
-
-message += (
-    f"📅 {day_tomorrow}  |  "
-    f"{jalali_tomorrow or tomorrow_str}\n\n"
-)
+message += "👥 شیفت فردا\n"
+message += f"{day_tomorrow} {jalali_tomorrow or tomorrow_str}\n\n"
 
 
 if tomorrow_data:
@@ -168,43 +165,25 @@ if tomorrow_data:
         tomorrow_data.get("مرخصی", "")
     ).strip()
 
-
-    # شیفت صبح
-    message += "🌅 صبح\n"
-    message += f"└ {morning or 'ثبت نشده'}\n\n"
-
-
-    # شیفت عصر
-    message += "🌇 عصر\n"
-    message += f"└ {evening or 'ثبت نشده'}\n\n"
-
-
-    # آف
-    message += "🛌 آف\n"
-    message += f"└ {off or 'ندارد'}\n\n"
-
-
-    # مرخصی
-    message += "🏖 مرخصی\n"
+    message += f"🌅 صبح: {morning or 'ثبت نشده'}\n"
+    message += f"🌇 عصر: {evening or 'ثبت نشده'}\n"
+    message += f"🛌 آف: {off or 'ندارد'}\n"
 
     if leave and leave != "—":
-        message += f"└ {leave}\n\n"
-    else:
-        message += "└ ندارد\n\n"
+        message += f"🏖 مرخصی: {leave}\n"
 
 else:
 
-    message += "└ اطلاعات شیفت فردا ثبت نشده\n\n"
+    message += "اطلاعات شیفت فردا ثبت نشده.\n"
 
 
 # =========================
-# یادآوری مخصوص سه‌شنبه
+# Reminder مخصوص سه‌شنبه
 # =========================
 
 if today.weekday() == 1:
 
-    message += "🔔 ━━━ یادآوری ━━━\n"
-    message += "└ امروز نامه ریکال هفته زده شود"
+    message += "\n🔔 امروز نامه ریکال هفته زده شود"
 
 
 # =========================

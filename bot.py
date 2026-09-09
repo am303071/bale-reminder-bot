@@ -3,7 +3,7 @@ import requests
 import datetime
 import gspread
 import google.auth
-
+import ZoneInfo
 
 # =========================
 # تنظیمات
@@ -34,12 +34,15 @@ sheet = spreadsheet.sheet1
 # تاریخ امروز و فردا
 # =========================
 
-today = datetime.date.today()
+from zoneinfo import ZoneInfo
+
+iran_time = datetime.datetime.now(ZoneInfo("Asia/Tehran"))
+
+today = iran_time.date()
 tomorrow = today + datetime.timedelta(days=1)
 
 today_str = today.strftime("%Y-%m-%d")
 tomorrow_str = tomorrow.strftime("%Y-%m-%d")
-
 
 # =========================
 # خواندن اطلاعات Sheet

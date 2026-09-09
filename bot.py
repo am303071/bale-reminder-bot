@@ -75,7 +75,9 @@ if rows:
 # ساخت پیام
 # =========================
 
-message = f"📅 برنامه امروز — {today_str}\n\n"
+jalali_today = today_data.get("تاریخ شمسی", "").strip() if today_data else ""
+
+message = f"📅 برنامه امروز — {jalali_today or today_str}\n\n"
 
 
 # کارهای امروز
@@ -98,7 +100,9 @@ else:
 # شیفت فردا
 # =========================
 
-message += f"👥 شیفت فردا — {tomorrow_str}\n\n"
+jalali_tomorrow = tomorrow_data.get("تاریخ شمسی", "").strip() if tomorrow_data else ""
+
+message += f"👥 شیفت فردا — {jalali_tomorrow or tomorrow_str}\n\n"
 
 if tomorrow_data:
 

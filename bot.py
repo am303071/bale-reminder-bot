@@ -45,21 +45,27 @@ tomorrow_str = tomorrow.strftime("%Y-%m-%d")
 # خواندن اطلاعات Sheet
 # =========================
 
-rows = sheet.get_all_records()
-
+rows = sheet.get_all_values()
 
 today_data = None
 tomorrow_data = None
 
-for row in rows:
+if rows:
+    headers = rows[0]
 
-    date_value = str(row.get("تاریخ", "")).strip()
+    for values in rows[1:]:
+        row = dict(zip(headers, values))
 
-    if date_value == today_str:
-        today_data = row
+        date_value = str(row.get("تاریخ", "")).strip()
 
-    if date_value == tomorrow_str:
-        tomorrow_data = row
+        # تبدیل فرمت‌های رایج تاریخ
+        date_value = date_value.replace("/", "-")
+
+        if date_value.startswith(today_str):
+            today_data = row
+
+        if date_value.startswith(tomorrow_str):
+            tomorrow_data = row
 
 
 # =========================

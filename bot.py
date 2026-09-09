@@ -76,9 +76,9 @@ if rows:
 # =========================
 
 jalali_today = today_data.get("تاریخ شمسی", "").strip() if today_data else ""
+day_today = today_data.get("روز", "").strip() if today_data else ""
 
-message = f"📅 برنامه امروز — {jalali_today or today_str}\n\n"
-
+message = f"📅 برنامه امروز\n{day_today} {jalali_today or today_str}\n\n"
 
 # کارهای امروز
 if today_data:
@@ -100,9 +100,10 @@ else:
 # شیفت فردا
 # =========================
 
-jalali_tomorrow = tomorrow_data.get("تاریخ شمسی", "").strip() if tomorrow_data else ""
+jalali_today = today_data.get("تاریخ شمسی", "").strip() if today_data else ""
+day_today = today_data.get("روز", "").strip() if today_data else ""
 
-message += f"👥 شیفت فردا — {jalali_tomorrow or tomorrow_str}\n\n"
+message = f"📅 برنامه امروز\n{day_today} {jalali_today or today_str}\n\n"
 
 if tomorrow_data:
 

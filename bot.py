@@ -101,10 +101,12 @@ if tomorrow_data:
 
     morning = str(tomorrow_data.get("شیفت صبح", "")).strip()
     evening = str(tomorrow_data.get("شیفت عصر", "")).strip()
+    off = str(tomorrow_data.get("آف", "")).strip()
     leave = str(tomorrow_data.get("مرخصی", "")).strip()
 
     message += f"🌅 صبح: {morning or 'ثبت نشده'}\n"
     message += f"🌇 عصر: {evening or 'ثبت نشده'}\n"
+    message += f"🛌 آف: {off or 'ندارد'}\n"
 
     if leave and leave != "—":
         message += f"🏖 مرخصی: {leave}\n"

@@ -5,6 +5,10 @@ on:
     - cron: "30 2 * * 2"
   workflow_dispatch:
 
+permissions:
+  contents: read
+  id-token: write
+
 jobs:
   send-reminder:
     runs-on: ubuntu-latest
@@ -12,6 +16,12 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: "projects/386194470839/locations/global/workloadIdentityPools/github-actions/providers/github"
+          service_account: "bale-reminder@bale-reminder-bot.iam.gserviceaccount.com"
 
       - name: Setup Python
         uses: actions/setup-python@v5

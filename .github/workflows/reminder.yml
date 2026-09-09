@@ -29,10 +29,11 @@ jobs:
           python-version: "3.x"
 
       - name: Install dependencies
-        run: pip install requests
+       run: pip install requests gspread google-auth
 
       - name: Send Bale reminder
         env:
-          BALE_TOKEN: ${{ secrets.BALE_TOKEN }}
-          BALE_CHAT_ID: ${{ secrets.BALE_CHAT_ID }}
+           BALE_TOKEN: ${{ secrets.BALE_TOKEN }}
+           BALE_CHAT_ID: ${{ secrets.BALE_CHAT_ID }}
+           GOOGLE_SHEET_ID: "1B4IJU24LKfMeN6tpGsfO1P8zeNXIjOjjS10_4iRtkQA"
         run: python bot.py

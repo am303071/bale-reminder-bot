@@ -120,7 +120,7 @@ else:
 # Reminder مخصوص دوشنبه
 # =========================
 
-if today.weekday() == 0:
+if today.weekday() == 1:
 
     message += "\n🔔 باید سه‌شنبه نامه ریکال رو بزنی"
 

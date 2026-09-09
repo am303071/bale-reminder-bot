@@ -3,7 +3,7 @@ import requests
 import datetime
 import gspread
 import google.auth
-import ZoneInfo
+
 
 # =========================
 # تنظیمات

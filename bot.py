@@ -59,17 +59,14 @@ if rows:
     for values in rows[1:]:
         row = dict(zip(headers, values))
 
-        date_value = str(row.get("تاریخ", "")).strip()
-
-        # تبدیل فرمت‌های رایج تاریخ
+        date_value = str(row.get("تاریخ میلادی", "")).strip()
         date_value = date_value.replace("/", "-")
 
-        if date_value.startswith(today_str):
+        if date_value == today_str:
             today_data = row
 
-        if date_value.startswith(tomorrow_str):
+        if date_value == tomorrow_str:
             tomorrow_data = row
-
 
 # =========================
 # ساخت پیام

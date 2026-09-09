@@ -47,6 +47,9 @@ tomorrow_str = tomorrow.strftime("%Y-%m-%d")
 
 rows = sheet.get_all_values()
 
+print("ROWS FROM SHEET:")
+print(rows)
+
 today_data = None
 tomorrow_data = None
 

@@ -3,6 +3,7 @@ import requests
 import datetime
 import gspread
 import google.auth
+from zoneinfo import ZoneInfo
 
 
 # =========================
@@ -34,8 +35,6 @@ sheet = spreadsheet.sheet1
 # تاریخ امروز و فردا
 # =========================
 
-from zoneinfo import ZoneInfo
-
 iran_time = datetime.datetime.now(ZoneInfo("Asia/Tehran"))
 
 today = iran_time.date()
@@ -43,6 +42,7 @@ tomorrow = today + datetime.timedelta(days=1)
 
 today_str = today.strftime("%Y-%m-%d")
 tomorrow_str = tomorrow.strftime("%Y-%m-%d")
+
 
 # =========================
 # خواندن اطلاعات Sheet
@@ -71,46 +71,99 @@ if rows:
         if date_value == tomorrow_str:
             tomorrow_data = row
 
+
+# =========================
+# اطلاعات تاریخ امروز
+# =========================
+
+if today_data:
+    jalali_today = str(
+        today_data.get("تاریخ شمسی", "")
+    ).strip()
+
+    day_today = str(
+        today_data.get("روز", "")
+    ).strip()
+
+else:
+    jalali_today = ""
+    day_today = ""
+
+
 # =========================
 # ساخت پیام
 # =========================
 
-jalali_today = today_data.get("تاریخ شمسی", "").strip() if today_data else ""
-day_today = today_data.get("روز", "").strip() if today_data else ""
+message = f"📅 برنامه امروز\n"
+message += f"{day_today} {jalali_today or today_str}\n\n"
 
-message = f"📅 برنامه امروز\n{day_today} {jalali_today or today_str}\n\n"
 
+# =========================
 # کارهای امروز
+# =========================
+
 if today_data:
 
-    tasks = str(today_data.get("کارهای امروز", "")).strip()
+    tasks = str(
+        today_data.get("کارهای امروز", "")
+    ).strip()
 
     if tasks:
         message += "📝 کارهای امروز:\n"
         message += tasks + "\n\n"
     else:
-        message += "📝 کارهای امروز:\nموردی ثبت نشده.\n\n"
+        message += "📝 کارهای امروز:\n"
+        message += "موردی ثبت نشده.\n\n"
 
 else:
 
-    message += "📝 کارهای امروز:\nاطلاعاتی برای امروز ثبت نشده.\n\n"
+    message += "📝 کارهای امروز:\n"
+    message += "اطلاعاتی برای امروز ثبت نشده.\n\n"
+
+
+# =========================
+# اطلاعات تاریخ فردا
+# =========================
+
+if tomorrow_data:
+    jalali_tomorrow = str(
+        tomorrow_data.get("تاریخ شمسی", "")
+    ).strip()
+
+    day_tomorrow = str(
+        tomorrow_data.get("روز", "")
+    ).strip()
+
+else:
+    jalali_tomorrow = ""
+    day_tomorrow = ""
 
 
 # =========================
 # شیفت فردا
 # =========================
 
-jalali_today = today_data.get("تاریخ شمسی", "").strip() if today_data else ""
-day_today = today_data.get("روز", "").strip() if today_data else ""
+message += "👥 شیفت فردا\n"
+message += f"{day_tomorrow} {jalali_tomorrow or tomorrow_str}\n\n"
 
-message = f"📅 برنامه امروز\n{day_today} {jalali_today or today_str}\n\n"
 
 if tomorrow_data:
 
-    morning = str(tomorrow_data.get("شیفت صبح", "")).strip()
-    evening = str(tomorrow_data.get("شیفت عصر", "")).strip()
-    off = str(tomorrow_data.get("آف", "")).strip()
-    leave = str(tomorrow_data.get("مرخصی", "")).strip()
+    morning = str(
+        tomorrow_data.get("شیفت صبح", "")
+    ).strip()
+
+    evening = str(
+        tomorrow_data.get("شیفت عصر", "")
+    ).strip()
+
+    off = str(
+        tomorrow_data.get("آف", "")
+    ).strip()
+
+    leave = str(
+        tomorrow_data.get("مرخصی", "")
+    ).strip()
 
     message += f"🌅 صبح: {morning or 'ثبت نشده'}\n"
     message += f"🌇 عصر: {evening or 'ثبت نشده'}\n"
@@ -125,7 +178,7 @@ else:
 
 
 # =========================
-# Reminder مخصوص سه شنبه
+# Reminder مخصوص سه‌شنبه
 # =========================
 
 if today.weekday() == 1:

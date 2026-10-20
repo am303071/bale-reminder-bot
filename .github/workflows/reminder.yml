@@ -35,5 +35,5 @@ jobs:
         env:
            BALE_TOKEN: ${{ secrets.BALE_TOKEN }}
            BALE_CHAT_ID: ${{ secrets.BALE_CHAT_ID }}
-           GOOGLE_SHEET_ID: "1B4IJU24LKfMeN6tpGsfO1P8zeNXIjOjjS10_4iRtkQA"
+           GOOGLE_SHEET_ID: "1uULmC1KFboCBqS-cH-3tHkqsHsThNLTjLYwIrNbGryw"
         run: python bot.py

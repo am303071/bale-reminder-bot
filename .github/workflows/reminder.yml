@@ -45,6 +45,11 @@ jobs:
       - name: Install dependencies
         run: pip install requests gspread google-auth
 
+      - name: Debug report mode
+        run: |
+          echo "Event: ${{ github.event_name }}"
+          echo "Input: ${{ github.event.inputs.report_mode }}"
+          echo "Mode: $REPORT_MODE"
       - name: Send Bale report
         env:
           BALE_TOKEN: ${{ secrets.BALE_TOKEN }}

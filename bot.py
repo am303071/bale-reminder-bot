@@ -2,6 +2,7 @@ import os
 import requests
 import google.auth
 import gspread
+import jdatetime
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 from collections import defaultdict
@@ -58,6 +59,10 @@ for row in schedule[1:]:
     })
 
 
+def jalali_date(date):
+    return jdatetime.date.fromgregorian(date=date).strftime("%Y/%m/%d")
+
+
 def send_message(message):
     response = requests.post(
         f"https://tapi.bale.ai/bot{TOKEN}/sendMessage",
@@ -77,7 +82,7 @@ def send_daily():
                 shifts.append(shift)
 
     shifts.sort(key=lambda x: x["start"])
-    lines = [f"📅 برنامه شیفت فردا ({target.isoformat()})", ""]
+    lines = [f"📅 برنامه شیفت فردا ({jalali_date(target)})", ""]
 
     for shift in shifts:
         lines.append(
@@ -109,7 +114,7 @@ def send_period(start_date, end_date, title):
         ]
 
         for shift in person_shifts:
-            date_text = shift["date"].strftime("%Y-%m-%d")
+            date_text = jalali_date(shift["date"])
             lines.append(
                 f"• {date_text}: {shift['start']} تا {shift['end']}"
             )
@@ -126,7 +131,7 @@ if mode == "daily":
 elif mode == "weekly":
     start = today + timedelta(days=1)
     end = start + timedelta(days=6)
-    send_period(start, end, f"برنامه هفتگی ({start} تا {end})")
+    send_period(start, end, f"برنامه هفتگی ({jalali_date(start)} تا {jalali_date(end)})")
 
 elif mode == "monthly":
     first_next_month = (today.replace(day=28) + timedelta(days=4)).replace(day=1)
@@ -137,7 +142,7 @@ elif mode == "monthly":
     send_period(
         first_next_month,
         last_next_month,
-        f"برنامه ماهانه {first_next_month.strftime('%Y-%m')}"
+        f"برنامه ماهانه {jalali_date(first_next_month)[:7]}"
     )
 
 print(f"گزارش {mode} ارسال شد.")

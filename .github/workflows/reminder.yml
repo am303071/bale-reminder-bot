@@ -43,7 +43,7 @@ jobs:
           python-version: "3.x"
 
       - name: Install dependencies
-        run: pip install requests gspread google-auth
+        run: pip install requests gspread google-auth jdatetime
 
       - name: Debug report mode
         run: |

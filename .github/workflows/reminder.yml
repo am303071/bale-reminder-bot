@@ -3,7 +3,19 @@ name: Bale Reminder
 on:
   schedule:
     - cron: "30 2 * * *"
+    - cron: "30 2 * * 3"
+    - cron: "30 2 1 * *"
   workflow_dispatch:
+    inputs:
+      report_mode:
+        description: نوع گزارش
+        type: choice
+        options:
+          - daily
+          - weekly
+          - monthly
+        default: daily
+        required: true
 
 permissions:
   contents: read
@@ -12,6 +24,8 @@ permissions:
 jobs:
   send-reminder:
     runs-on: ubuntu-latest
+    env:
+      REPORT_MODE: ${{ inputs.report_mode || (github.event.schedule == '30 2 * * 3' && 'weekly' || github.event.schedule == '30 2 1 * *' && 'monthly' || 'daily') }}
 
     steps:
       - name: Checkout repository
@@ -31,9 +45,9 @@ jobs:
       - name: Install dependencies
         run: pip install requests gspread google-auth
 
-      - name: Send Bale reminder
+      - name: Send Bale report
         env:
-           BALE_TOKEN: ${{ secrets.BALE_TOKEN }}
-           BALE_CHAT_ID: ${{ secrets.BALE_CHAT_ID }}
-           GOOGLE_SHEET_ID: "1uULmC1KFboCBqS-cH-3tHkqsHsThNLTjLYwIrNbGryw"
+          BALE_TOKEN: ${{ secrets.BALE_TOKEN }}
+          BALE_CHAT_ID: ${{ secrets.BALE_CHAT_ID }}
+          GOOGLE_SHEET_ID: "1uULmC1KFboCBqS-cH-3tHkqsHsThNLTjLYwIrNbGryw"
         run: python bot.py
